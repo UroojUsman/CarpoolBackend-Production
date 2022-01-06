@@ -29,4 +29,7 @@ Route::post('/ResendOtp',[SmsController::class,'ResendOtp']);
 Route::group(['middleware'=>['auth:sanctum']],function(){
 
     Route::post('/logout',[AuthController::class,'logout']);
+    Route::post('/updateProfile',[AuthController::class,'updateProfile']);
+
+    
 });

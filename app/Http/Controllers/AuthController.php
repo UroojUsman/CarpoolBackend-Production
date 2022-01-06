@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\AuthRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,14 +22,15 @@ class AuthController extends Controller
 
     public function register(AuthRequest $request){
 
-        $user= $request->store();
-        $send= $this->SmsService->SendSms($user->id);
+        $response= $request->store();
+        return $response;
+        //$send= $this->SmsService->SendSms($user->id);
         
-        $response=[
-            'user'=> $user
-        ];
+    //     $response=[
+    //         'user'=> $user
+    //     ];
 
-        return response($response,Response::HTTP_CREATED); 
+    // return response($response,/*Response::HTTP_CREATED*/201); 
     }
 
     public function logout(Request $request){
@@ -51,9 +52,9 @@ class AuthController extends Controller
         $user= User::where('phone',$field['phone'])->first();
         if(!$user || !Hash::check($field['password'],$user->password))
         {
-            return response([
+            return [
                 'message'=>'Invalid Phone Number/ Password'
-            ],401);
+            ];
         }
         $token =$user->createToken('myappToken')->plainTextToken;
         $response=[
@@ -62,5 +63,10 @@ class AuthController extends Controller
         ];
 
         return response($response,201); 
+    }
+
+    public function updateProfile()
+    {
+        
     }
 }

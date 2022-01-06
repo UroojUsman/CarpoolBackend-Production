@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\GuestUser;
 use App\Models\Otp;
 use Nexmo\Laravel\Facade\Nexmo;
 use Illuminate\Http\Response;
@@ -18,16 +19,19 @@ class SmsController extends Controller
         $this->SmsService = $SmsService;
     }
 
-    public function VerifyOtp(Request $req)
+    public function VerifyOtp(Request $req) 
     {
         $Otp = new Otp;
-        $user = new User;
-        $userEntry = $user->where('id',$req->id)->first();
+        $guestUser= new GuestUser;
+         $user = new User;
+        $guserEntry = $guestUser->where('id',$req->id)->first();
+        $guserEntry= $guserEntry->toArray();
        $code= $Otp->where('user_id',$req->id)->first();
        $Otpid = $code->id;
        if($req->Otp === $code->Otp)
-       {
-           $token = $userEntry->createToken('myappToken')->plainTextToken;
+       {   $verifedUser= $user->create($guserEntry);
+           $token = $verifedUser->createToken('myappToken')->plainTextToken;
+            GuestUser::where('id',$req->id)->delete();
            $code->delete($Otpid);
            
            return response([
@@ -46,8 +50,22 @@ class SmsController extends Controller
 
     public function ResendOtp(Request $req)
     {
-       $this->SmsService->SendSms($req->id);
-        // SmsController::SendSms($req->id);
-        return $send;
+       $Otp = new Otp;
+       $code= $Otp->where('user_id',$req->id)->first();
+       $Otpid = $code->id;
+       $code->delete($Otpid);
+       $send=$this->SmsService->SendSms($req->id);
+       if($send)
+       {
+        return response([
+            'message'=>'OTP sent'
+           ],201); 
+       }
+       else{
+        return response([
+            'message'=>'OTP not sent'
+           ]); 
+       }
+       
     }
 }

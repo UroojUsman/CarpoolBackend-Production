@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\GuestUser;
 use App\Models\Otp;
 use Nexmo\Laravel\Facade\Nexmo;
 
@@ -10,18 +11,18 @@ class SmsService{
     public function SendSms($user_id)
     {
         $Otp= mt_rand(1000,9999);
-        $user = new User;
+        $guestuser = new GuestUser;
         $OtpEntry= new Otp;
-        $userEntry = $user->where('id',$user_id)->first();
-        $OtpEntry->user_id= $user_id;
+        $guserEntry = $guestuser->where('id',$user_id)->first();
+        $OtpEntry->user_id= $guserEntry->id;
         $OtpEntry->Otp= $Otp;
         $OtpEntry->save();
-        Nexmo::message()->send([
-            'to'=>$userEntry->phone,
-            'from'=> $userEntry->phone,
+        $status = Nexmo::message()->send([
+            'to'=>$guserEntry->phone,
+            'from'=> "UniRide",
             'text' => 'your OTP is '.$Otp.' for verification'
         ]);
 
-        return true;
+        return $status;
     }
 }
