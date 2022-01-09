@@ -58,14 +58,14 @@ class AuthRequest extends FormRequest
             {
                 return response([
                     'message'=>'SMS sent',
-                    'guest'=>$guestuser,
+                    'guest'=>$guestuser->id,
                     'code'=>202
                 ],202);
             }
             else{
                 return response([
                     'message'=>'SMS not sent',
-                    'guest'=>$guestuser,
+                    'guest'=>$guestuser->id,
                     
                 ],401);
             }

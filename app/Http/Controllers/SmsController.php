@@ -36,6 +36,7 @@ class SmsController extends Controller
            
            return response([
             'message'=>'token generated successfully',
+            'user'=>$verifedUser,
             'token'=>$token
            ],201);
        }
