@@ -49,7 +49,7 @@ class AuthRequest extends FormRequest
             return response([
                 'message'=>'User Already Registered',
                 'code'=>401
-            ],401);
+            ]);
         }
         else{
             $guestuser= GuestUser::create($this->validated());
@@ -60,14 +60,14 @@ class AuthRequest extends FormRequest
                     'message'=>'SMS sent',
                     'guest'=>$guestuser->id,
                     'code'=>202
-                ],202);
+                ]);
             }
             else{
                 return response([
                     'message'=>'SMS not sent',
                     'guest'=>$guestuser->id,
                     
-                ],401);
+                ]);
             }
             
         }

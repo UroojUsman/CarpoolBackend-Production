@@ -21,7 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'phone'
+        'phone',
+        'is_driver',
+        'cnic',
+        'car_number',
+        'car_name'
     ];
 
     /**

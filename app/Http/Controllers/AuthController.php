@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\SmsController;
@@ -65,8 +66,9 @@ class AuthController extends Controller
         return response($response,201); 
     }
 
-    public function updateProfile()
+    public function updateProfile(updateProfileRequest $request,$id)
     {
-        
+        $response= $request->update($id);
+        return $response;
     }
 }

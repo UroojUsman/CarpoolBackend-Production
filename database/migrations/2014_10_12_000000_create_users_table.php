@@ -19,12 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('is_driver')->nullable();
+            $table->boolean('is_driver')->default('0');
             $table->string('cnic')->nullable();
             $table->string('car_number')->nullable();
             $table->string('car_name')->nullable();
-            $table->string('car_model')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+           // $table->string('car_model')->nullable();
+           // $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
