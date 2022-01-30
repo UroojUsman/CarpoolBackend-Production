@@ -62,7 +62,24 @@ class DriverController extends Controller
 
     public function AllDriver()
     {
-        return Driver::all();
+        $drivers= Driver::all();
+        $response=array();
+        foreach($drivers as $driver)
+        {
+            $response[]=['driver_name'=>$driver->user->name,
+                         'driver_id'=> $driver->id,
+                        'driver_user_id'=> $driver->user_id,
+                        'start_date'=>$driver->start_date,
+                        'start_time'=>$driver->start_time,
+                        'D_source_Long'=>$driver->D_source_Long,
+                        'D_source_Lat'=>$driver->D_source_Lat,
+                        'D_dest_Long'=>$driver->D_dest_Long,
+                        'D_dest_Lat'=>$driver->D_dest_Lat,
+                        'total_fare'=>$driver->total_fare,
+                        'available_seats'=>$driver->available_seats];
+        }
+
+        return $response;
     }
 
     public function AcceptRequest(Request $request)

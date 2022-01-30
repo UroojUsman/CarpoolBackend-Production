@@ -34,6 +34,7 @@ Route::post('/updateDriver',[DriverController::class,'updateDriver']);
 Route::get('/AllDriver',[DriverController::class,'AllDriver']);
 Route::post('/createRider',[RiderController::class,'createRider']);
 Route::post('/addRequest',[RequestController::class,'addRequest']);
+Route::post('/showRequestsToDriver',[RequestController::class,'showRequestsToDriver']);
 
 
 Route::group(['middleware'=>['auth:sanctum']],function(){

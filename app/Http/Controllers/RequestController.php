@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\addreqRequest;
-use App\Models\Ride_Request;
+use App\Models\Rider_Request;
 
 class RequestController extends Controller
 {
@@ -17,8 +17,8 @@ class RequestController extends Controller
     public function showRequestsToDriver(Request $request)
     {
         $rider=array();
-        $reqs= Ride_Request::where('driver_id',$request->driver_id)->get();
-        foreach($req as $reqs)
+        $reqs= Rider_Request::where('driver_id',$request->driver_id)->get();
+        foreach($reqs as $req)
         {
             $rider[]=$req->rider;
         }
