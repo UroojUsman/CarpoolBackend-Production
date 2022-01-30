@@ -17,4 +17,8 @@ class Rider extends Model
         'R_dest_Lat',
         'status'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

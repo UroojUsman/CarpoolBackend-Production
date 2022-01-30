@@ -20,7 +20,14 @@ class RequestController extends Controller
         $reqs= Rider_Request::where('driver_id',$request->driver_id)->get();
         foreach($reqs as $req)
         {
-            $rider[]=$req->rider;
+            $rider[]=['rider_name'=>$req->rider->user->name,
+                        'rider_id'=>$req->rider->id,
+                        'rider_user_id'=>$req->rider->user_id,
+                        'R_source_Long'=>$req->rider->R_source_Long,
+                        'R_source_Lat'=>$req->rider->R_source_Lat,
+                        'R_dest_Long'=>$req->rider->R_dest_Long,
+                        'R_dest_Lat'=>$req->rider->R_dest_Lat,
+                        'status'=>$req->rider->status];
         }
 
         return $rider;
