@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 // use App\Http\Requests\createDriverRequest;
 use App\Http\Requests\createDriverRequest;
-use App\Http\Requests\updateDriverRequest;
 use App\Models\Driver;
 
 class DriverController extends Controller

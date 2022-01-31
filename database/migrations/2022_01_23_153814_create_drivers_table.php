@@ -18,10 +18,10 @@ class CreateDriversTable extends Migration
             $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
             $table->date('start_date');
             $table->time('start_time');
-            $table->decimal('D_source_Long');
-            $table->decimal('D_source_Lat');
-            $table->decimal('D_dest_Long');
-            $table->decimal('D_dest_Lat');
+            $table->string('D_source_Long');
+            $table->string('D_source_Lat');
+            $table->string('D_dest_Long');
+            $table->string('D_dest_Lat');
             $table->integer('total_fare');
             $table->integer('available_seats')->default(3);
             // $table->bigInteger('rider_1')->nullable();

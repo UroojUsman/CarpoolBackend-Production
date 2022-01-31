@@ -16,10 +16,10 @@ class CreateRidersTable extends Migration
         Schema::create('riders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
-            $table->decimal('R_source_Long');
-            $table->decimal('R_source_Lat');
-            $table->decimal('R_dest_Long');
-            $table->decimal('R_dest_Lat');
+            $table->string('R_source_Long');
+            $table->string('R_source_Lat');
+            $table->string('R_dest_Long');
+            $table->string('R_dest_Lat');
             $table->string('status')->default('Pending');
             $table->timestamps();
         });
