@@ -32,6 +32,11 @@ Route::post('/updateProfile',[AuthController::class,'updateProfile']);
 Route::post('/createDriver',[DriverController::class,'createDriver']);
 Route::post('/updateDriver',[DriverController::class,'updateDriver']);
 Route::get('/AllDriver',[DriverController::class,'AllDriver']);
+Route::post('/StartRide',[DriverController::class,'StartRide']);
+Route::post('/EndtRide',[DriverController::class,'EndRide']);
+//Route::post('/StartRide',[DriverController::class,'StartRide']);
+
+
 Route::post('/createRider',[RiderController::class,'createRider']);
 Route::post('/updateRider',[RiderController::class,'updateRider']);
 Route::post('/addRequest',[RequestController::class,'addRequest']);

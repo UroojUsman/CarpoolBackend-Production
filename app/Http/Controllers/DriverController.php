@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 // use App\Http\Requests\createDriverRequest;
 use App\Http\Requests\createDriverRequest;
 use App\Models\Driver;
+use App\Models\Rider;
+use App\Models\RiderTripHistory;
+use App\Models\DriverTripHistory;
 
 class DriverController extends Controller
 {
@@ -78,7 +81,64 @@ class DriverController extends Controller
                         'available_seats'=>$driver->available_seats];
         }
 
-        return $response;
+        return  response([
+            'data'=>$response   
+        ]);
+    }
+    public function StartRide(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required',
+            // 'driver_id' => 'required',
+        ]);
+        $driver= Driver::where('id',$validated->id)->get();
+        $driver->status='Started';
+        $driver->save();
+        $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Accepted')->get();
+        foreach($riders as $rider)
+        {
+            $rider->status='Started';
+            $rider->save();
+        }
+        return response([
+            'driver'=>$driver,
+            'riders'=>$riders   
+        ]);
+
+    }
+
+    public function EndRide(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required',
+            // 'driver_id' => 'required',
+        ]);
+
+        $driver= Driver::where('id',$validated->id)->get();
+        $driver->status='Completed';
+        $driver->save();
+        $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Started')->get();
+        foreach($riders as $rider)
+        {
+            $rider->status='Completed';
+            $rider->save();
+        }
+        return response([
+            'driver'=>$driver,
+            'riders'=>$riders   
+        ]);
+
+    }
+
+    public function CancelOffer(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required'
+            // 'driver_id' => 'required',
+        ]);
+        $driver= Driver::where('id',$validated->id)->get();
+
+
     }
 
     public function AcceptRequest(Request $request)

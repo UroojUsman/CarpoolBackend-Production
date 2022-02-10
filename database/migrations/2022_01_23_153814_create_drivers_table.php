@@ -16,14 +16,20 @@ class CreateDriversTable extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
-            $table->date('start_date');
-            $table->time('start_time');
+            // $table->date('start_date');
+            // $table->time('start_time');
+            $table->dateTime('start_datetime');
+            $table->dateTime('end_datetime')->nullable();
             $table->string('D_source_Long');
             $table->string('D_source_Lat');
+            $table->string('D_source_address');
             $table->string('D_dest_Long');
             $table->string('D_dest_Lat');
+            $table->string('D_dest_address');
             $table->integer('total_fare');
             $table->integer('available_seats')->default(3);
+            $table->integer('booked_seats')->default(0);
+            $table->string('status')->default('Offered');
             // $table->bigInteger('rider_1')->nullable();
             // $table->bigInteger('rider_2')->nullable();
             // $table->bigInteger('rider_3')->nullable();
