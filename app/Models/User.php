@@ -24,6 +24,7 @@ class User extends Authenticatable
         'phone',
         'is_driver',
         'cnic',
+        'license_num',
         'car_number',
         'car_name'
     ];

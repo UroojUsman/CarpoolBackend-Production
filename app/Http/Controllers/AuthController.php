@@ -71,6 +71,7 @@ class AuthController extends Controller
             'id' => 'required',
             'is_driver'=>'required',
             'cnic'=>'required',
+            'license_num'=>'required',
             'car_name'=>'required',
             'car_number'=>'required'
         ]);
@@ -79,6 +80,7 @@ class AuthController extends Controller
             $user= User::where('id',$validated['id'])->first(); 
             $user->is_driver= $validated['is_driver'];
             $user->cnic = $validated['cnic'];
+            $user->license_num=$validated['license_num'];
             $user->car_name = $validated['car_name'];
             $user->car_number = $validated['car_number'];
             $user->save();

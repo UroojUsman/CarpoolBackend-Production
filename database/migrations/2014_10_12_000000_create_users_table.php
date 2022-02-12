@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('is_driver')->default('false');
             $table->string('cnic')->nullable();
+            $table->string('license_num')->nullable();
             $table->string('car_number')->nullable();
             $table->string('car_name')->nullable();
            // $table->string('car_model')->nullable();
