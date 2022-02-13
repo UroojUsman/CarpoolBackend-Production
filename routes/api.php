@@ -23,17 +23,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/OtpVerification',[SmsController::class,'VerifyOtp']);
-Route::post('/ResendOtp',[SmsController::class,'ResendOtp']);
+Route::post('/register',[AuthController::class,'register']); //tested
+Route::post('/login',[AuthController::class,'login']); //tested
+Route::post('/OtpVerification',[SmsController::class,'VerifyOtp']); //tested
+Route::post('/ResendOtp',[SmsController::class,'ResendOtp']); //tested
 
 Route::post('/updateProfile',[AuthController::class,'updateProfile']); //tested
 Route::post('/createDriver',[DriverController::class,'createDriver']); //tested
 Route::post('/updateDriver',[DriverController::class,'updateDriver']);  //tested
 Route::get('/AllDriver',[DriverController::class,'AllDriver']); //tested
 Route::post('/AcceptRequest',[DriverController::class,'AcceptRequest']); //tested
-Route::post('/StartRide',[DriverController::class,'StartRide']);
+Route::post('/StartRide',[DriverController::class,'StartRide']); //tested
 Route::post('/EndtRide',[DriverController::class,'EndRide']);
 //Route::post('/StartRide',[DriverController::class,'StartRide']);
 

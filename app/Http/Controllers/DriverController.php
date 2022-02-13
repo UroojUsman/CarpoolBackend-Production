@@ -99,10 +99,10 @@ class DriverController extends Controller
             'id' => 'required',
             // 'driver_id' => 'required',
         ]);
-        $driver= Driver::where('id',$validated->id)->get();
+        $driver= Driver::where('id',$validated['id'])->first();
         $driver->status='Started';
         $driver->save();
-        $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Accepted')->get();
+        $riders = Rider::select('id')->where('driver_id', '=',$validated['id'])->where('status', '=', 'Accepted')->get();
         foreach($riders as $rider)
         {
             $rider->status='Started';
