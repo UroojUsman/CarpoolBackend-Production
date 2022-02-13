@@ -156,31 +156,34 @@ class DriverController extends Controller
             'driver_id' => 'required',
         ]);
 
-        $driver= Driver::where('driver_id',$validated->driver_id)->first();
-        if($driver && $driver->available_seats>0 && $driver->available_seats<=3)
+        $driver= Driver::where('id',$validated['driver_id'])->first();
+        $rider= Rider::where('id',$validated['rider_id'])->where('status','Pending')->first();
+        if($driver && $driver->available_seats>0 && $driver->booked_seats<$driver->available_seats)
         {
-            if(is_null($driver->R1))
-            {
-                $driver->R1=$validated->rider_id;
-                $driver->available_seats = $driver->available_seats -1;
-                $driver->save();
-                
-            }
-            else if(is_null($driver->R2))
-            {
-                $driver->R2=$validated->rider_id;
-                $driver->available_seats = $driver->available_seats -1;
-                $driver->save();
-            }
-            else if(is_null($driver->R3))
-            {
-                $driver->R3=$validated->rider_id;
-                $driver->available_seats = $driver->available_seats -1;
-                $driver->save();
-            }
+           
+            $rider->status='Accepted';
+            $driver->booked_seats = $driver->booked_seats +1;
+            $driver->save();
+            $rider->save();
 
-
+            return response([
+                'message'=>'rider accpeted',
+                'driver'=>$driver,
+                'riders'=>$rider 
+                  
+            ]);
 
         }
+        else if($driver->available_seats == $driver->booked_seats)
+        {
+            return response([
+                'message'=>'All seats are booked',
+                'driver'=>$driver,
+                'riders'=>$rider
+                  
+            ]);
+        }
+
+        return $request;
     }
 }

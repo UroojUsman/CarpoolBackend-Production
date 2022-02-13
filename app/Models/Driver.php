@@ -20,6 +20,7 @@ class Driver extends Model
         'D_dest_Lat',
         'D_dest_address',
         'total_fare',
+        'available_seats',
         'occupied_seats',
         'total_seats',
         'status'
