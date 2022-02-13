@@ -26,12 +26,13 @@ class createDriverRequest extends FormRequest
     {
         return [
             'user_id'=>['required'],
-            'start_date'=>['required'],
-            'start_time'=>['required'],
+             'start_datetime'=>['required'],
             'D_source_Long'=>['required'],
             'D_source_Lat'=>['required'],
+            'D_source_address'=>['required'],
             'D_dest_Long'=>['required'],
             'D_dest_Lat'=>['required'],
+            'D_dest_address'=>['required'],
             'total_fare'=>['required'],
             'available_seats'=>['required'],
             // 'rider_1'=>['nullable'],
