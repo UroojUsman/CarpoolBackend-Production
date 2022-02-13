@@ -26,10 +26,13 @@ class addRiderRequest extends FormRequest
     {
         return [
             'user_id'=>['required'],
+            'driver_id'=>['required'],
             'R_source_Long'=>['required'],
             'R_source_Lat'=>['required'],
+            'R_source_address'=>['required'],
             'R_dest_Long'=>['required'],
-            'R_dest_Lat'=>['required']
+            'R_dest_Lat'=>['required'],
+            'R_dest_address'=>['required']
         ];
     }
 

@@ -23,22 +23,26 @@ class DriverController extends Controller
     {
         $validated = $request->validate([
             'id' => 'required',
-             'start_date' => 'required',
-             'start_time' => 'required',
+             'start_datetime' => 'required',
+            //  'start_time' => 'required',
              'D_source_Long' => 'required',
              'D_source_Lat' => 'required',
+             'D_source_address' => 'required',
              'D_dest_Long' => 'required',
              'D_dest_Lat' => 'required',
+             'D_dest_address' => 'required',
              'total_fare' => 'required',
              'available_seats'=>'required'
         ]);
          $driver= Driver::where('id',$validated['id'])->first(); 
-        $driver->start_date= $validated['start_date'];
-        $driver->start_time = $validated['start_time'];
+        $driver->start_datetime= $validated['start_datetime'];
+        //$driver->start_time = $validated['start_time'];
         $driver->D_source_Long = $validated['D_source_Long'];
         $driver->D_source_Lat = $validated['D_source_Lat'];
+        $driver->D_source_address = $validated['D_source_address'];
         $driver->D_dest_Long = $validated['D_dest_Long'];
         $driver->D_dest_Lat = $validated['D_dest_Lat'];
+        $driver->D_dest_address = $validated['D_dest_address'];
         $driver->total_fare= $validated['total_fare'];
         $driver->available_seats=$validated['available_seats'];
         if($driver->save())
@@ -69,14 +73,17 @@ class DriverController extends Controller
         foreach($drivers as $driver)
         {
             $response[]=['driver_name'=>$driver->user->name,
-                         'driver_id'=> $driver->id,
+                        'driver_car_name'=>$driver->user->car_name,
+                        'driver_car_number'=>$driver->user->car_number,
+                        'driver_id'=> $driver->id,
                         'driver_user_id'=> $driver->user_id,
-                        'start_date'=>$driver->start_date,
-                        'start_time'=>$driver->start_time,
+                        'start_datetime'=>$driver->start_datetime,
                         'D_source_Long'=>$driver->D_source_Long,
                         'D_source_Lat'=>$driver->D_source_Lat,
+                        'D_source_address'=>$driver->D_source_address,
                         'D_dest_Long'=>$driver->D_dest_Long,
                         'D_dest_Lat'=>$driver->D_dest_Lat,
+                        'D_dest_address'=>$driver->D_dest_address,
                         'total_fare'=>$driver->total_fare,
                         'available_seats'=>$driver->available_seats];
         }
