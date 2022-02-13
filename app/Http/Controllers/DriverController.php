@@ -75,6 +75,7 @@ class DriverController extends Controller
             $response[]=['driver_name'=>$driver->user->name,
                         'driver_car_name'=>$driver->user->car_name,
                         'driver_car_number'=>$driver->user->car_number,
+                        'driver_phone'=>$driver->user->phone,
                         'driver_id'=> $driver->id,
                         'driver_user_id'=> $driver->user_id,
                         'start_datetime'=>$driver->start_datetime,
