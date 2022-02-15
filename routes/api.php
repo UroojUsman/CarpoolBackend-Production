@@ -34,7 +34,7 @@ Route::post('/updateDriver',[DriverController::class,'updateDriver']);  //tested
 Route::get('/AllDriver',[DriverController::class,'AllDriver']); //tested
 Route::post('/AcceptRequest',[DriverController::class,'AcceptRequest']); //tested
 Route::post('/StartRide',[DriverController::class,'StartRide']); //tested
-Route::post('/EndtRide',[DriverController::class,'EndRide']);
+Route::post('/EndRide',[DriverController::class,'EndRide']);
 //Route::post('/StartRide',[DriverController::class,'StartRide']);
 
 
@@ -43,6 +43,7 @@ Route::post('/updateRider',[RiderController::class,'updateRider']); //tested
 // Route::post('/addRequest',[RequestController::class,'addRequest']);
 Route::get('/allRider',[RiderController::class,'allRider']); //tested
 Route::post('/ShowAllRidersToDriver',[RiderController::class,'ShowAllRidersToDriver']); //tested
+Route::post('/EndRiderRide',[RiderController::class,'EndRiderRide']);
 
 
 Route::group(['middleware'=>['auth:sanctum']],function(){
