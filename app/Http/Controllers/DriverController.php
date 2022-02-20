@@ -23,22 +23,26 @@ class DriverController extends Controller
     {
         $validated = $request->validate([
             'id' => 'required',
-             'start_date' => 'required',
-             'start_time' => 'required',
+             'start_datetime' => 'required',
+            //  'start_time' => 'required',
              'D_source_Long' => 'required',
              'D_source_Lat' => 'required',
+             'D_source_address' => 'required',
              'D_dest_Long' => 'required',
              'D_dest_Lat' => 'required',
+             'D_dest_address' => 'required',
              'total_fare' => 'required',
              'available_seats'=>'required'
         ]);
          $driver= Driver::where('id',$validated['id'])->first(); 
-        $driver->start_date= $validated['start_date'];
-        $driver->start_time = $validated['start_time'];
+        $driver->start_datetime= $validated['start_datetime'];
+        //$driver->start_time = $validated['start_time'];
         $driver->D_source_Long = $validated['D_source_Long'];
         $driver->D_source_Lat = $validated['D_source_Lat'];
+        $driver->D_source_address = $validated['D_source_address'];
         $driver->D_dest_Long = $validated['D_dest_Long'];
         $driver->D_dest_Lat = $validated['D_dest_Lat'];
+        $driver->D_dest_address = $validated['D_dest_address'];
         $driver->total_fare= $validated['total_fare'];
         $driver->available_seats=$validated['available_seats'];
         if($driver->save())
@@ -62,50 +66,55 @@ class DriverController extends Controller
 }
 
 
-    public function AllDriver()
+public function AllDriver()
+{
+    $drivers= Driver::all();
+    $response=array();
+    foreach($drivers as $driver)
     {
-        $drivers= Driver::all();
-        $response=array();
-        foreach($drivers as $driver)
-        {
-            $response[]=['driver_name'=>$driver->user->name,
-                         'driver_id'=> $driver->id,
-                        'driver_user_id'=> $driver->user_id,
-                        'start_date'=>$driver->start_date,
-                        'start_time'=>$driver->start_time,
-                        'D_source_Long'=>$driver->D_source_Long,
-                        'D_source_Lat'=>$driver->D_source_Lat,
-                        'D_dest_Long'=>$driver->D_dest_Long,
-                        'D_dest_Lat'=>$driver->D_dest_Lat,
-                        'total_fare'=>$driver->total_fare,
-                        'available_seats'=>$driver->available_seats];
-        }
-
-        return  response([
-            'data'=>$response   
-        ]);
+        $response[]=['driver_name'=>$driver->user->name,
+                    'driver_car_name'=>$driver->user->car_name,
+                    'driver_car_number'=>$driver->user->car_number,
+                    'driver_phone'=>$driver->user->phone,
+                    'driver_id'=> $driver->id,
+                    'driver_user_id'=> $driver->user_id,
+                    'start_datetime'=>$driver->start_datetime,
+                    'D_source_Long'=>$driver->D_source_Long,
+                    'D_source_Lat'=>$driver->D_source_Lat,
+                    'D_source_address'=>$driver->D_source_address,
+                    'D_dest_Long'=>$driver->D_dest_Long,
+                    'D_dest_Lat'=>$driver->D_dest_Lat,
+                    'D_dest_address'=>$driver->D_dest_address,
+                    'total_fare'=>$driver->total_fare,
+                    'available_seats'=>$driver->available_seats];
     }
-    public function StartRide(Request $request)
+
+    return  response([
+        'data'=>$response   
+    ]);
+}
+public function StartRide(Request $request)
+{
+    $validated = $request->validate([
+        'id' => 'required',
+        // 'driver_id' => 'required',
+    ]);
+    $driver= Driver::where('id',$validated->id)->get();
+    $driver->status='Started';
+    $driver->save();
+    $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Accepted')->get();
+    foreach($riders as $rider)
     {
-        $validated = $request->validate([
-            'id' => 'required',
-            // 'driver_id' => 'required',
-        ]);
-        $driver= Driver::where('id',$validated->id)->get();
-        $driver->status='Started';
-        $driver->save();
-        $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Accepted')->get();
-        foreach($riders as $rider)
-        {
-            $rider->status='Started';
-            $rider->save();
-        }
-        return response([
-            'driver'=>$driver,
-            'riders'=>$riders   
-        ]);
-
+        $rider->status='Started';
+        $rider->save();
     }
+    return response([
+        'driver'=>$driver,
+        'riders'=>$riders   
+    ]);
+
+}
+
 
     
 
@@ -164,6 +173,21 @@ class DriverController extends Controller
 
     }
 
+    public function RejectRide(Request $request)
+    {
+        $validated = $request->validate([
+            'rider_id' => 'required',
+            'driver_id' => 'required',
+        ]);
+        $rider= Rider::where('id',$validated['rider_id'])->where('status','Pending')->delete();
+        
+            return response([
+                'message'=>'Ride Rejected',     
+            ]);
+    }
+
+    
+
     public function AcceptRequest(Request $request)
     {
         $validated = $request->validate([
@@ -171,31 +195,34 @@ class DriverController extends Controller
             'driver_id' => 'required',
         ]);
 
-        $driver= Driver::where('driver_id',$validated->driver_id)->first();
-        if($driver && $driver->available_seats>0 && $driver->available_seats<=3)
+        $driver= Driver::where('id',$validated['driver_id'])->first();
+        $rider= Rider::where('id',$validated['rider_id'])->where('status','Pending')->first();
+        if($driver && $driver->available_seats>0 && $driver->booked_seats<$driver->available_seats)
         {
-            if(is_null($driver->R1))
-            {
-                $driver->R1=$validated->rider_id;
-                $driver->available_seats = $driver->available_seats -1;
-                $driver->save();
-                
-            }
-            else if(is_null($driver->R2))
-            {
-                $driver->R2=$validated->rider_id;
-                $driver->available_seats = $driver->available_seats -1;
-                $driver->save();
-            }
-            else if(is_null($driver->R3))
-            {
-                $driver->R3=$validated->rider_id;
-                $driver->available_seats = $driver->available_seats -1;
-                $driver->save();
-            }
+           
+            $rider->status='Accepted';
+            $driver->booked_seats = $driver->booked_seats +1;
+            $driver->save();
+            $rider->save();
 
-
+            return response([
+                'message'=>'rider accpeted',
+                'driver'=>$driver,
+                'riders'=>$rider 
+                  
+            ]);
 
         }
+        else if($driver->available_seats == $driver->booked_seats)
+        {
+            return response([
+                'message'=>'All seats are booked',
+                'driver'=>$driver,
+                'riders'=>$rider
+                  
+            ]);
+        }
+
+        return $request;
     }
 }
