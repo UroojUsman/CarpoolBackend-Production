@@ -111,6 +111,10 @@ class RiderController extends Controller
             'D_dest_Long'=>$rider->driver->D_dest_Long,
             'D_dest_Lat'=>$rider->driver->D_dest_Lat,
             'D_dest_address'=>$rider->driver->D_dest_address,
+            'available_seats'=>$rider->driver->available_seats,
+            'total_fare'=>$rider->driver->total_fare,
+            'car_name'=>$rider->driver->user->car_name,
+            'car_num'=>$rider->driver->user->car_number
         ];
         
         if($rider)

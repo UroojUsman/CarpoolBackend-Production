@@ -86,7 +86,9 @@ public function AllDriver()
                     'D_dest_Lat'=>$driver->D_dest_Lat,
                     'D_dest_address'=>$driver->D_dest_address,
                     'total_fare'=>$driver->total_fare,
-                    'available_seats'=>$driver->available_seats];
+                    'available_seats'=>$driver->available_seats,
+                    'status'=>$driver->status,
+		    'booked_seats'=>$driver->booked_seats];
     }
 
     return  response([
@@ -99,10 +101,10 @@ public function StartRide(Request $request)
         'id' => 'required',
         // 'driver_id' => 'required',
     ]);
-    $driver= Driver::where('id',$validated->id)->get();
+    $driver= Driver::where('id',$validated['id'])->first();
     $driver->status='Started';
     $driver->save();
-    $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Accepted')->get();
+    $riders = Rider::select('id')->where('driver_id', '=',$validated['id'])->where('status', '=', 'Accepted')->get();
     foreach($riders as $rider)
     {
         $rider->status='Started';
@@ -126,14 +128,14 @@ public function StartRide(Request $request)
             // 'driver_id' => 'required',
         ]);
 
-        $driver= Driver::where('id',$validated->id)->first();
+        $driver= Driver::where('id',$validated['id'])->first();
         $DriverTripHistory = new DriverTripHistory(); 
         $total_fare = $driver->total_fare;
         $occupied_seats= $driver->occupied_seats;
         $fare= $total_fare/$occupied_seats;
         // $driver->status='Completed';
         // $driver->save();
-        // $riders = Rider::select('id')->where('driver_id', '=',$validated->id)->where('status', '=', 'Started')->get();
+        // $riders = Rider::select('id')->where('driver_id', '=',$validated['id'])->where('status', '=', 'Started')->get();
            
             $DriverTripHistory->driver_user_id = $driver->user_id;
             $DriverTripHistory->driver_name = $driver->user->name;

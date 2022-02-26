@@ -46,6 +46,7 @@ Route::get('/allRider',[RiderController::class,'allRider']); //tested
 Route::post('/ShowAllRidersToDriver',[RiderController::class,'ShowAllRidersToDriver']); //tested
 Route::post('/EndRiderRide',[RiderController::class,'EndRiderRide']);
 Route::post('/ShowDriverDetailsByRiderID',[RiderController::class,'ShowDriverDetailsByRiderID']); //tested
+Route::post('/ShowAllAcceptedRidersbyDriver',[RiderController::class,'ShowAllAcceptedRidersbyDriver']);
 Route::post('/ShowRiderStatus',[RiderController::class,'ShowRiderStatus']); //tested
 
 
